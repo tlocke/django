@@ -14,7 +14,7 @@ from django.contrib.postgres.indexes import (
 from django.db import NotSupportedError, connection
 from django.db.models import CharField, F, Index, Q
 from django.db.models.functions import Cast, Collate, Length, Lower
-from django.test import skipUnlessDBFeature
+from django.test import skipUnlessDBFeature, tag
 from django.test.utils import register_lookup
 
 from . import PostgreSQLSimpleTestCase, PostgreSQLTestCase
@@ -654,6 +654,7 @@ class SchemaTests(PostgreSQLTestCase):
             editor.remove_index(Scene, index)
         self.assertNotIn(index_name, self.get_constraints(Scene._meta.db_table))
 
+    @tag("psycopg_specific")
     def test_spgist_include_not_supported(self):
         index_name = "spgist_include_exception"
         index = SpGistIndex(fields=["scene"], name=index_name, include=["setting"])

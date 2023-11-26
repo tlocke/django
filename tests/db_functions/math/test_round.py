@@ -4,7 +4,7 @@ from decimal import Decimal
 from django.db import connection
 from django.db.models import DecimalField
 from django.db.models.functions import Pi, Round
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.test.utils import register_lookup
 
 from ..models import DecimalModel, FloatModel, IntegerModel
@@ -53,6 +53,7 @@ class RoundTests(TestCase):
         self.assertIsInstance(obj.n1_round, Decimal)
         self.assertEqual(obj.n1_round, 370)
 
+    @tag("psycopg_specific")
     def test_float(self):
         FloatModel.objects.create(f1=-27.55, f2=0.55)
         obj = FloatModel.objects.annotate(
@@ -63,6 +64,7 @@ class RoundTests(TestCase):
         self.assertAlmostEqual(obj.f1_round, obj.f1, places=0)
         self.assertAlmostEqual(obj.f2_round, obj.f2, places=0)
 
+    @tag("psycopg_specific")
     def test_float_with_precision(self):
         FloatModel.objects.create(f1=-5.75, f2=Pi())
         obj = FloatModel.objects.annotate(
@@ -74,6 +76,7 @@ class RoundTests(TestCase):
         self.assertAlmostEqual(obj.f1_round, obj.f1, places=1)
         self.assertAlmostEqual(obj.f2_round, obj.f2, places=5)
 
+    @tag("psycopg_specific")
     def test_float_with_negative_precision(self):
         FloatModel.objects.create(f1=365.25)
         obj = FloatModel.objects.annotate(f1_round=Round("f1", -1)).first()

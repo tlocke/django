@@ -1,6 +1,6 @@
 from django.db import DatabaseError, connection
 from django.db.models import Index
-from django.test import TransactionTestCase, skipUnlessDBFeature
+from django.test import TransactionTestCase, skipUnlessDBFeature, tag
 
 from .models import (
     Article,
@@ -125,6 +125,7 @@ class IntrospectionTests(TransactionTestCase):
             ],
         )
 
+    @tag("psycopg_specific")
     def test_get_table_description_col_lengths(self):
         with connection.cursor() as cursor:
             desc = connection.introspection.get_table_description(

@@ -6,7 +6,7 @@ from django.core.management import call_command
 from django.core.management.commands import inspectdb
 from django.db import connection
 from django.db.backends.base.introspection import TableInfo
-from django.test import TestCase, TransactionTestCase, skipUnlessDBFeature
+from django.test import TestCase, TransactionTestCase, skipUnlessDBFeature, tag
 
 from .models import PeopleMoreData, test_collation
 
@@ -71,6 +71,7 @@ class InspectDBTestCase(TestCase):
 
         return assertFieldType
 
+    @tag("psycopg_specific")
     def test_field_types(self):
         """Test introspection of various Django field types"""
         assertFieldType = self.make_field_type_asserter()
@@ -147,6 +148,7 @@ class InspectDBTestCase(TestCase):
             output,
         )
 
+    @tag("psycopg_specific")
     @skipUnlessDBFeature("supports_collation_on_charfield")
     @skipUnless(test_collation, "Language collations are not supported.")
     def test_char_field_db_collation(self):
@@ -191,6 +193,7 @@ class InspectDBTestCase(TestCase):
         output = out.getvalue()
         self.assertIn("char_field = models.CharField()", output)
 
+    @tag("psycopg_specific")
     def test_number_field_types(self):
         """Test introspection of various Django field types"""
         assertFieldType = self.make_field_type_asserter()

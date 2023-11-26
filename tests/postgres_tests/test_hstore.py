@@ -5,6 +5,7 @@ from django.db import connection
 from django.db.models import F, OuterRef, Subquery
 from django.db.models.expressions import RawSQL
 from django.forms import Form
+from django.test import tag
 from django.test.utils import CaptureQueriesContext, isolate_apps
 
 from . import PostgreSQLSimpleTestCase, PostgreSQLTestCase
@@ -19,6 +20,7 @@ except ImportError:
     pass
 
 
+@tag("psycopg_specific")
 class SimpleTests(PostgreSQLTestCase):
     def test_save_load_success(self):
         value = {"a": "b"}
@@ -68,6 +70,7 @@ class SimpleTests(PostgreSQLTestCase):
         self.assertEqual(instance.array_field, expected_value)
 
 
+@tag("psycopg_specific")
 class TestQuerying(PostgreSQLTestCase):
     @classmethod
     def setUpTestData(cls):
@@ -411,6 +414,7 @@ class TestFormField(PostgreSQLSimpleTestCase):
         self.assertTrue(form_w_hstore.has_changed())
 
 
+@tag("psycopg_specific")
 class TestValidator(PostgreSQLSimpleTestCase):
     def test_simple_valid(self):
         validator = KeysValidator(keys=["a", "b"])

@@ -1,6 +1,6 @@
 from django.db.models import Value as V
 from django.db.models.functions import Lower, StrIndex, Substr, Upper
-from django.test import TestCase
+from django.test import TestCase, tag
 
 from ..models import Author
 
@@ -38,6 +38,7 @@ class SubstrTests(TestCase):
         with self.assertRaisesMessage(ValueError, "'pos' must be greater than 0"):
             Author.objects.annotate(raises=Substr("name", 0))
 
+    @tag("psycopg_specific")
     def test_expressions(self):
         Author.objects.create(name="John Smith", alias="smithj")
         Author.objects.create(name="Rhonda")

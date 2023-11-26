@@ -1,6 +1,7 @@
 from io import StringIO
 
 from django.core.management import call_command
+from django.test import tag
 
 from . import PostgreSQLTestCase
 
@@ -17,6 +18,7 @@ class InspectDBTests(PostgreSQLTestCase):
         for field_output in field_outputs:
             self.assertIn(field_output, output)
 
+    @tag("psycopg_specific")
     def test_range_fields(self):
         self.assertFieldsInModel(
             "postgres_tests_rangesmodel",

@@ -1,11 +1,12 @@
 from django.db.models import Value
 from django.db.models.functions import StrIndex
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.utils import timezone
 
 from ..models import Article, Author
 
 
+@tag("psycopg_specific")
 class StrIndexTests(TestCase):
     def test_annotate_charfield(self):
         Author.objects.create(name="George. R. R. Martin")

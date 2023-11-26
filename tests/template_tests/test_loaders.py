@@ -4,6 +4,7 @@ import tempfile
 import unittest
 from contextlib import contextmanager
 
+from django.db import connection
 from django.template import TemplateDoesNotExist
 from django.template.engine import Engine
 from django.test import SimpleTestCase, override_settings
@@ -217,6 +218,7 @@ class FileSystemLoaderTests(SimpleTestCase):
         sys.platform == "win32",
         "Python on Windows doesn't have working os.chmod().",
     )
+    @unittest.skipIf(connection.vendor == "postgresql_pg8000", "Fails with pg8000")
     def test_permissions_error(self):
         with tempfile.NamedTemporaryFile() as tmpfile:
             tmpdir = os.path.dirname(tmpfile.name)

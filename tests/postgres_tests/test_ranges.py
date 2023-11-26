@@ -6,7 +6,7 @@ from django import forms
 from django.core import exceptions, serializers
 from django.db.models import DateField, DateTimeField, F, Func, Value
 from django.http import QueryDict
-from django.test import override_settings
+from django.test import override_settings, tag
 from django.test.utils import isolate_apps
 from django.utils import timezone
 
@@ -94,6 +94,7 @@ class BasicTests(PostgreSQLSimpleTestCase):
         self.assertEqual(kwargs, {"default_bounds": "[]"})
 
 
+@tag("psycopg_specific")
 class TestSaveLoad(PostgreSQLTestCase):
     def test_all_fields(self):
         now = timezone.now()
@@ -183,6 +184,7 @@ class TestSaveLoad(PostgreSQLTestCase):
         self.assertEqual(field.base_field.model, RangesModel)
 
 
+@tag("psycopg_specific")
 class TestRangeContainsLookup(PostgreSQLTestCase):
     @classmethod
     def setUpTestData(cls):
@@ -261,6 +263,7 @@ class TestRangeContainsLookup(PostgreSQLTestCase):
                 )
 
 
+@tag("psycopg_specific")
 class TestQuerying(PostgreSQLTestCase):
     @classmethod
     def setUpTestData(cls):

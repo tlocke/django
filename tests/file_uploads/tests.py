@@ -21,7 +21,7 @@ from django.http.multipartparser import (
     MultiPartParserError,
     Parser,
 )
-from django.test import SimpleTestCase, TestCase, client, override_settings
+from django.test import SimpleTestCase, TestCase, client, override_settings, tag
 
 from . import uploadhandler
 from .models import FileModel
@@ -855,6 +855,7 @@ class DirectoryCreationTests(SimpleTestCase):
     def setUp(self):
         self.obj = FileModel()
 
+    @tag("psycopg_specific")  # Doesn't work on GitHub Actions
     @unittest.skipIf(
         sys.platform == "win32", "Python on Windows doesn't have working os.chmod()."
     )

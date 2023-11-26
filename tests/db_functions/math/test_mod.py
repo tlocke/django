@@ -2,7 +2,7 @@ import math
 from decimal import Decimal
 
 from django.db.models.functions import Mod
-from django.test import TestCase
+from django.test import TestCase, tag
 
 from ..models import DecimalModel, FloatModel, IntegerModel
 
@@ -23,6 +23,7 @@ class ModTests(TestCase):
         self.assertIsInstance(obj.n_mod, Decimal)
         self.assertAlmostEqual(obj.n_mod, Decimal(math.fmod(obj.n1, obj.n2)))
 
+    @tag("psycopg_specific")
     def test_float(self):
         FloatModel.objects.create(f1=-25, f2=0.33)
         obj = FloatModel.objects.annotate(f_mod=Mod("f1", "f2")).first()

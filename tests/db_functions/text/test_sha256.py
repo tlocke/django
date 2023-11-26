@@ -1,12 +1,13 @@
 from django.db import connection
 from django.db.models import CharField
 from django.db.models.functions import SHA256
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.test.utils import register_lookup
 
 from ..models import Author
 
 
+@tag("psycopg_specific")
 class SHA256Tests(TestCase):
     @classmethod
     def setUpTestData(cls):

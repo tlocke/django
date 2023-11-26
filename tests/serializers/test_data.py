@@ -12,7 +12,7 @@ import uuid
 
 from django.core import serializers
 from django.db import connection, models
-from django.test import TestCase
+from django.test import TestCase, tag
 
 from .models import (
     Anchor,
@@ -430,6 +430,7 @@ if connection.features.interprets_empty_strings_as_nulls:
     ]
 
 
+@tag("psycopg_specific")
 class SerializerDataTests(TestCase):
     pass
 

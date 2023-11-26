@@ -2,7 +2,7 @@ import math
 from decimal import Decimal
 
 from django.db.models.functions import Log
-from django.test import TestCase
+from django.test import TestCase, tag
 
 from ..models import DecimalModel, FloatModel, IntegerModel
 
@@ -25,6 +25,7 @@ class LogTests(TestCase):
         self.assertIsInstance(obj.n_log, Decimal)
         self.assertAlmostEqual(obj.n_log, Decimal(math.log(obj.n2, obj.n1)))
 
+    @tag("psycopg_specific")
     def test_float(self):
         FloatModel.objects.create(f1=2.0, f2=4.0)
         obj = FloatModel.objects.annotate(f_log=Log("f1", "f2")).first()

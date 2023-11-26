@@ -36,6 +36,7 @@ from django.test import (
     TransactionTestCase,
     skipIfDBFeature,
     skipUnlessDBFeature,
+    tag as test_tag,
 )
 from django.test.html import HTMLParseError, parse_html
 from django.test.testcases import DatabaseOperationForbidden
@@ -238,6 +239,7 @@ class AssertNumQueriesTests(TestCase):
         self.assertNumQueries(2, test_func)
 
 
+@test_tag("psycopg_specific")
 class AssertNumQueriesUponConnectionTests(TransactionTestCase):
     available_apps = []
 

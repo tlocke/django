@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.test import TestCase
+from django.test import TestCase, tag
 
 from .models import DataModel
 
@@ -8,6 +8,7 @@ from .models import DataModel
 class BinaryFieldTests(TestCase):
     binary_data = b"\x00\x46\xFE"
 
+    @tag("psycopg_specific")
     def test_set_and_retrieve(self):
         data_set = (
             self.binary_data,
@@ -52,6 +53,7 @@ class BinaryFieldTests(TestCase):
             DataModel.objects.filter(data=bytearray(self.binary_data)), [dm]
         )
 
+    @tag("psycopg_specific")
     def test_filter_memoryview(self):
         dm = DataModel.objects.create(data=self.binary_data)
         DataModel.objects.create(data=b"\xef\xbb\xbf")

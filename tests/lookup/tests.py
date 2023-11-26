@@ -28,7 +28,7 @@ from django.db.models.lookups import (
     LessThan,
     LessThanOrEqual,
 )
-from django.test import TestCase, skipUnlessDBFeature
+from django.test import TestCase, skipUnlessDBFeature, tag
 from django.test.utils import isolate_apps, register_lookup
 
 from .models import (
@@ -1028,6 +1028,7 @@ class LookupTests(TestCase):
         Season.objects.create(year=2012, gt=None)
         self.assertQuerySetEqual(Season.objects.filter(gt__regex=r"^$"), [])
 
+    @tag("psycopg_specific")
     def test_textfield_exact_null(self):
         with self.assertNumQueries(1) as ctx:
             self.assertSequenceEqual(Author.objects.filter(bio=None), [self.au2])

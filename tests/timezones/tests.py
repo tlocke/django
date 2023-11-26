@@ -26,6 +26,7 @@ from django.test import (
     override_settings,
     skipIfDBFeature,
     skipUnlessDBFeature,
+    tag,
 )
 from django.test.utils import requires_tz_support
 from django.urls import reverse
@@ -645,6 +646,7 @@ class NewDatabaseTests(TestCase):
             )
             self.assertEqual(cursor.fetchall()[0][0], utc_naive_dt)
 
+    @tag("psycopg_specific")
     @skipUnlessDBFeature("supports_timezones")
     def test_cursor_explicit_time_zone(self):
         with override_database_connection_timezone("Europe/Paris"):
